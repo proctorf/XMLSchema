@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <start>
+    <ref name="xml"/>
+  </start>
+  <define name="xml">
+    <element name="xml">
+      <ref name="header"/>
+      <ref name="transcript"/>
+      <ref name="footer"/>
+    </element>
+  </define>
+  <define name="header">
+    <element name="header">
+      <ref name="citationInfo"/>
+      <ref name="respDesc"/>
+      <optional>
+        <ref name="revisionDesc"/>
+      </optional>
+    </element>
+  </define>
+  <define name="citationInfo">
+    <element name="citationInfo">
+      <optional>
+        <ref name="articleTitle"/>
+      </optional>
+      <ref name="journalTitle"/>
+      <oneOrMore>
+        <ref name="publicationDate"/>
+      </oneOrMore>
+      <oneOrMore>
+        <ref name="publicationPlace"/>
+      </oneOrMore>
+      <ref name="page"/>
+      <optional>
+        <ref name="url"/>
+      </optional>
+    </element>
+  </define>
+  <!-- citation info -->
+  <define name="articleTitle">
+    <element name="articleTitle">
+      <text/>
+    </element>
+  </define>
+  <define name="journalTitle">
+    <element name="journalTitle">
+      <text/>
+    </element>
+  </define>
+  <!-- newspaper title -->
+  <define name="publicationDate">
+    <element name="publicationDate">
+      <ref name="when"/>
+      <text/>
+    </element>
+  </define>
+  <define name="when">
+    <attribute name="when">
+      <choice>
+        <data type="date"/>
+        <data type="gYearMonth"/>
+        <data type="gYear"/>
+      </choice>
+    </attribute>
+  </define>
+  <!-- this has to be in yyyy-mm-dd format -->
+  <define name="publicationPlace">
+    <element name="publicationPlace">
+      <ref name="settlement"/>
+      <ref name="state"/>
+      <text/>
+    </element>
+  </define>
+  <define name="url">
+    <element name="url">
+      <data type="anyURI"/>
+    </element>
+  </define>
+  <!-- use for any absolute url beginning in http:// but not relative links -->
+  <define name="page">
+    <element name="page">
+      <data type="integer"/>
+    </element>
+  </define>
+  <!-- this will only accept whole numbers -->
+  <define name="respDesc">
+    <element name="respDesc">
+      <ref name="created"/>
+    </element>
+  </define>
+  <!-- information on who created this XML -->
+  <define name="created">
+    <element name="created">
+      <ref name="resp"/>
+      <ref name="when"/>
+      <zeroOrMore>
+        <ref name="notes"/>
+      </zeroOrMore>
+      <text/>
+    </element>
+  </define>
+  <!-- this is you, provive your name -->
+  <define name="notes">
+    <element name="notes">
+      <text/>
+    </element>
+  </define>
+  <!-- this is where you can add any notes about the document -->
+  <define name="resp">
+    <attribute name="resp"/>
+  </define>
+  <!-- use # + your initials - #ftp -->
+  <define name="revisionDesc">
+    <element name="revisionDesc">
+      <oneOrMore>
+        <ref name="change"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <!-- not required, but would be used if someone makes changes to the XML doc -->
+  <define name="change">
+    <element name="change">
+      <ref name="resp"/>
+      <ref name="when"/>
+      <text/>
+    </element>
+  </define>
+  <define name="transcript">
+    <element name="transcript">
+      <zeroOrMore>
+        <ref name="p"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="graphic"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="lb"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="hi"/>
+      </zeroOrMore>
+      <text/>
+    </element>
+  </define>
+  <!-- this is where you add the text of your add -->
+  <define name="graphic">
+    <element name="graphic">
+      <optional>
+        <ref name="rend"/>
+      </optional>
+      <optional>
+        <ref name="height"/>
+      </optional>
+      <optional>
+        <ref name="width"/>
+      </optional>
+      <optional>
+        <ref name="relativeUrl"/>
+      </optional>
+      <optional>
+        <ref name="figDesc"/>
+      </optional>
+    </element>
+  </define>
+  <!-- use this if there is an image in the ad -->
+  <define name="rend">
+    <attribute name="rend">
+      <choice>
+        <value>left</value>
+        <value>right</value>
+        <value>bold</value>
+        <value>italics</value>
+        <value>long s</value>
+        <value>allCaps</value>
+        <text/>
+      </choice>
+    </attribute>
+  </define>
+  <!-- hi= highlights, location of image of any phyusical elements of the ad -->
+  <define name="height">
+    <attribute name="height"/>
+  </define>
+  <!---->
+  <define name="width">
+    <attribute name="width"/>
+  </define>
+  <define name="relativeUrl">
+    <attribute name="relativeURL"/>
+  </define>
+  <!-- location of copy of image -->
+  <define name="figDesc">
+    <attribute name="figDesc"/>
+  </define>
+  <define name="p">
+    <element name="p">
+      <mixed>
+        <zeroOrMore>
+          <choice>
+            <ref name="name"/>
+            <ref name="place"/>
+            <ref name="date"/>
+            <ref name="lb"/>
+            <ref name="hi"/>
+          </choice>
+        </zeroOrMore>
+      </mixed>
+    </element>
+  </define>
+  <!-- use this to mark paragraphs -->
+  <define name="lb">
+    <element name="lb">
+      <empty/>
+    </element>
+  </define>
+  <!-- Optional, us to mark lines in your ad -->
+  <define name="hi">
+    <element name="hi">
+      <ref name="rend"/>
+      <text/>
+    </element>
+  </define>
+  <define name="name">
+    <element name="name">
+      <ref name="xmlid"/>
+      <zeroOrMore>
+        <ref name="hi"/>
+      </zeroOrMore>
+      <text/>
+    </element>
+  </define>
+  <!-- use to tag people in the text -->
+  <define name="xmlid">
+    <attribute name="xml:id"/>
+  </define>
+  <!-- this is a special idnetifier for each person in the ad, at this point leave blank -->
+  <define name="place">
+    <element name="place">
+      <optional>
+        <ref name="placeType"/>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <!-- to mark place names in your ad -->
+  <define name="placeType">
+    <attribute name="placeType">
+      <choice>
+        <value>origin</value>
+        <value>potential destination</value>
+        <value>location last seen</value>
+        <value>pubPlace</value>
+        <text/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="date">
+    <element name="date">
+      <ref name="when"/>
+      <ref name="dateType"/>
+      <text/>
+    </element>
+  </define>
+  <!-- to mark dates in your ad -->
+  <define name="dateType">
+    <attribute name="dateType">
+      <choice>
+        <value>lastSeen</value>
+        <value>departure</value>
+        <value>dateOfSubmission</value>
+        <value>dateWritten</value>
+        <value>publicationDate</value>
+        <value>other</value>
+        <text/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="footer">
+    <element name="footer">
+      <ref name="rewardInfo"/>
+      <oneOrMore>
+        <ref name="listPerson"/>
+      </oneOrMore>
+      <oneOrMore>
+        <ref name="listPlace"/>
+      </oneOrMore>
+      <empty/>
+    </element>
+  </define>
+  <!-- section where we will pull out specific info on reward, people, and places in the ad -->
+  <define name="rewardInfo">
+    <element name="rewardInfo">
+      <ref name="amount"/>
+      <zeroOrMore>
+        <ref name="criteria"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="amount">
+    <element name="amount">
+      <oneOrMore>
+        <ref name="minAmount"/>
+      </oneOrMore>
+      <zeroOrMore>
+        <ref name="maxAmount"/>
+      </zeroOrMore>
+      <text/>
+    </element>
+  </define>
+  <!-- copy and tag language about reward -->
+  <define name="minAmount">
+    <attribute name="minAmount">
+      <data type="double"/>
+    </attribute>
+  </define>
+  <!-- use if there is only 1 reward, or if there are multple offers. Must use decimal to two places "x.00" -->
+  <define name="maxAmount">
+    <attribute name="maxAmount">
+      <data type="double"/>
+    </attribute>
+  </define>
+  <!-- use if there are multiple reward values -->
+  <define name="criteria">
+    <element name="criteria">
+      <text/>
+    </element>
+  </define>
+  <!-- capture conditions (in state, out of state, etc) -->
+  <define name="listPerson">
+    <element name="listPerson">
+      <oneOrMore>
+        <ref name="persName"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <!-- this creates a tag block where you will list all the people in the add using "perName" -->
+  <define name="persName">
+    <element name="persName">
+      <mixed>
+        <ref name="xmlid"/>
+        <ref name="role"/>
+        <ref name="sex"/>
+        <ref name="foreName"/>
+        <optional>
+          <ref name="midName"/>
+        </optional>
+        <optional>
+          <ref name="surName"/>
+        </optional>
+        <zeroOrMore>
+          <ref name="alias"/>
+        </zeroOrMore>
+        <choice>
+          <ref name="enslaverInfo"/>
+          <ref name="characteristics"/>
+        </choice>
+      </mixed>
+    </element>
+  </define>
+  <!-- use to create entry on each individual in ad, tag full name as text and record other as attributes info -->
+  <define name="alias">
+    <attribute name="alias"/>
+  </define>
+  <define name="role">
+    <attribute name="role">
+      <choice>
+        <value>enslaved</value>
+        <value>enslaver</value>
+        <value>collaborator</value>
+        <value>other</value>
+        <text/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="sex">
+    <attribute name="sex">
+      <choice>
+        <value>m</value>
+        <value>f</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="foreName">
+    <attribute name="foreName"/>
+  </define>
+  <!-- first name -->
+  <define name="midName">
+    <attribute name="midName"/>
+  </define>
+  <!-- middle name -->
+  <define name="surName">
+    <attribute name="surName"/>
+  </define>
+  <!-- last name -->
+  <define name="enslaverInfo">
+    <element name="enslaverInfo">
+      <text/>
+    </element>
+  </define>
+  <!-- use if the person tagged is an enslaver -->
+  <define name="characteristics">
+    <element name="characteristics">
+      <ref name="physical"/>
+      <ref name="countenance"/>
+      <ref name="otherFeatures"/>
+      <empty/>
+    </element>
+  </define>
+  <!-- use to capture physical, personality, and other feature for enslaved fugatives -->
+  <define name="physical">
+    <element name="physical">
+      <zeroOrMore>
+        <mixed>
+          <choice>
+            <zeroOrMore>
+              <ref name="phenotype"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="build"/>
+            </zeroOrMore>
+            <ref name="eyes"/>
+            <ref name="ears"/>
+            <ref name="teeth"/>
+            <ref name="scars"/>
+            <ref name="minHeight"/>
+            <ref name="maxHeight"/>
+            <ref name="minAge"/>
+            <ref name="maxAge"/>
+            <zeroOrMore>
+              <ref name="clothing"/>
+            </zeroOrMore>
+            <optional>
+              <ref name="possessions"/>
+            </optional>
+          </choice>
+        </mixed>
+      </zeroOrMore>
+    </element>
+  </define>
+  <!-- only include element when you have data -->
+  <define name="phenotype">
+    <element name="phenotype">
+      <text/>
+    </element>
+  </define>
+  <!-- racial classification -->
+  <define name="build">
+    <element name="build">
+      <text/>
+    </element>
+  </define>
+  <!-- bodytype -->
+  <define name="eyes">
+    <element name="eyes">
+      <text/>
+    </element>
+  </define>
+  <define name="ears">
+    <element name="ears">
+      <text/>
+    </element>
+  </define>
+  <define name="teeth">
+    <element name="ears">
+      <text/>
+    </element>
+  </define>
+  <define name="scars">
+    <element name="scars">
+      <text/>
+    </element>
+  </define>
+  <define name="minHeight">
+    <element name="minHeight">
+      <ref name="inches"/>
+      <text/>
+    </element>
+  </define>
+  <!-- use if there is one or multiple descriptions -->
+  <define name="inches">
+    <attribute name="inches">
+      <data type="double"/>
+    </attribute>
+  </define>
+  <!-- in inches -->
+  <define name="maxHeight">
+    <element name="maxHeight">
+      <ref name="inches"/>
+      <text/>
+    </element>
+  </define>
+  <!-- use if more than one description -->
+  <define name="minAge">
+    <element name="minAge">
+      <ref name="years"/>
+      <text/>
+    </element>
+  </define>
+  <!-- use if there is one or multiple descriptions -->
+  <define name="years">
+    <attribute name="years">
+      <data type="integer"/>
+    </attribute>
+  </define>
+  <!-- in years, whole numbers -->
+  <define name="maxAge">
+    <element name="maxAge">
+      <ref name="years"/>
+      <text/>
+    </element>
+  </define>
+  <!-- in years, use if multiple descriptors -->
+  <define name="clothing">
+    <element name="clothing">
+      <text/>
+    </element>
+  </define>
+  <define name="possessions">
+    <element name="possessions">
+      <text/>
+    </element>
+  </define>
+  <define name="countenance">
+    <element name="countenance">
+      <zeroOrMore>
+        <mixed>
+          <choice>
+            <zeroOrMore>
+              <ref name="speech"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="behavior"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="previousRunaway"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="passAsFree"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="other"/>
+            </zeroOrMore>
+          </choice>
+        </mixed>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="speech">
+    <element name="speech">
+      <text/>
+    </element>
+  </define>
+  <define name="behavior">
+    <element name="behavior">
+      <text/>
+    </element>
+  </define>
+  <define name="previousRunaway">
+    <element name="previousRunaway">
+      <ref name="ran"/>
+      <text/>
+    </element>
+  </define>
+  <!-- does ad indicate if they ranway before -->
+  <define name="ran">
+    <attribute name="ran">
+      <value>y</value>
+    </attribute>
+  </define>
+  <define name="other">
+    <element name="other">
+      <text/>
+    </element>
+  </define>
+  <define name="passAsFree">
+    <element name="passAsFree">
+      <ref name="pass"/>
+      <text/>
+    </element>
+  </define>
+  <!-- does ad indicate if they will attempt to pass as free -->
+  <define name="pass">
+    <attribute name="pass">
+      <value>y</value>
+    </attribute>
+  </define>
+  <!-- do NOT use to indicate if the enslved person might have false paper (see below) -->
+  <define name="otherFeatures">
+    <element name="otherFeatures">
+      <mixed>
+        <optional>
+          <ref name="inAGroup"/>
+        </optional>
+        <optional>
+          <ref name="literate"/>
+        </optional>
+        <optional>
+          <ref name="skills"/>
+        </optional>
+        <optional>
+          <ref name="papersDesc"/>
+        </optional>
+        <optional>
+          <ref name="hadHelp"/>
+        </optional>
+      </mixed>
+    </element>
+  </define>
+  <!-- other info about enslaved person -->
+  <define name="inAGroup">
+    <element name="inAGroup">
+      <optional>
+        <ref name="group"/>
+      </optional>
+      <optional>
+        <ref name="with"/>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <!-- use if multiple runaways included in ad -->
+  <define name="group">
+    <attribute name="group">
+      <value>y</value>
+    </attribute>
+  </define>
+  <define name="with">
+    <element name="with">
+      <text/>
+    </element>
+  </define>
+  <define name="skills">
+    <element name="skills">
+      <text/>
+    </element>
+  </define>
+  <define name="papersDesc">
+    <element name="papersDesc">
+      <ref name="papers"/>
+      <text/>
+    </element>
+  </define>
+  <!-- text on papers in ad -->
+  <define name="papers">
+    <attribute name="papers">
+      <value>y</value>
+    </attribute>
+  </define>
+  <define name="hadHelp">
+    <element name="hadHelp">
+      <text/>
+    </element>
+  </define>
+  <!-- did anyone help the runaay -->
+  <define name="literate">
+    <element name="literate">
+      <text/>
+    </element>
+  </define>
+  <!-- can they read/write? -->
+  <define name="listPlace">
+    <element name="listPlace">
+      <oneOrMore>
+        <ref name="placeName"/>
+      </oneOrMore>
+      <empty/>
+    </element>
+  </define>
+  <!-- this creates a tag block where you will discuss places in the ad -->
+  <define name="placeName">
+    <element name="placeName">
+      <ref name="placeType"/>
+      <optional>
+        <ref name="settlement"/>
+      </optional>
+      <optional>
+        <ref name="county"/>
+      </optional>
+      <optional>
+        <ref name="state"/>
+      </optional>
+      <optional>
+        <ref name="country"/>
+      </optional>
+      <optional>
+        <ref name="geo"/>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="settlement">
+    <attribute name="settlement"/>
+  </define>
+  <!-- city, town, village, etc -->
+  <define name="county">
+    <attribute name="county"/>
+  </define>
+  <!-- use if the add includes info, or you find, info on the county of location -->
+  <define name="state">
+    <attribute name="state"/>
+  </define>
+  <!-- refers to the US state or Canadian provide -->
+  <define name="country">
+    <attribute name="country"/>
+  </define>
+  <define name="geo">
+    <attribute name="geo"/>
+  </define>
+</grammar>
+<!-- latitude, longitude -->
